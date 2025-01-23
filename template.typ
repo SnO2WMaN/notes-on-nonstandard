@@ -116,6 +116,14 @@
   namefmt: name => [(#name)],
 )
 
+#let proofsketch = thmproof(
+  "proof",
+  "証明の概要",
+  breakable: true,
+  titlefmt: strong,
+  namefmt: name => [(#name)],
+)
+
 #let struct(body) = block(
   width: 100%,
   breakable: true,
