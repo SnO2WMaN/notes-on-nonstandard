@@ -24,6 +24,7 @@
 = はじめに
 
 算術の超準モデルの性質，およびTennenbaumの定理(@thm:Tennenbaum)についてのメモ．
+ほとんどは @tanakaSugakuKisoRon1997 の特に @kikuchiPartSanjutsuNo1997 の章，および @kikuchiIncompleteness2014 に基づいている．
 
 = 本文
 
@@ -106,7 +107,7 @@ $PeanoArithmetic$ では全ての算術的な論理式に対して最小値原�
   $PeanoArithmetic$ の任意の超準モデル $Model(M)$ に対して $StandardModel initSeg Model(M)$．
 ]<prop:any_nonstandard_initSeg>
 
-#lemma[菊池8.3.9][
+#lemma[@kikuchiIncompleteness2014[補題8.3.9]][
   $Model(M') initSeg Model(M)$ とし，$Delta_0$-論理式 $phi(arrow(x))$，$arrow(a) in Model(M')$ とする．
   このとき，$Model(M') vDash phi(arrow(a)) <==> Model(M) vDash phi(arrow(a))$．
 ]<lem:equiv_initSeg_delta0>
@@ -114,7 +115,7 @@ $PeanoArithmetic$ では全ての算術的な論理式に対して最小値原�
   $phi$ の論理式の構成に関する帰納法．
 ]
 
-#lemma[菊池8.3.10][@lem:equiv_initSeg_delta0 は$Sigma_1$-論理式でも成り立つ．]<lem:equiv_initSeg_sigma1>
+#lemma[@kikuchiIncompleteness2014[補題8.3.10]][@lem:equiv_initSeg_delta0 は$Sigma_1$-論理式でも成り立つ．]<lem:equiv_initSeg_sigma1>
 
 #corollary[
   $T$ は $Pi_1$-公理化可能な理論とする．
@@ -251,7 +252,7 @@ Overspillから次のことが一般に成り立つ（証明不明）．
     $n in B$ とすると，$Model(M) vDash phi(a)$ であるから，$n in.not A$．$A subset.eq C$ だから $n in.not C$ であり，よって $B sect C = emptyset$．
   ]
 
-  $C$ が再帰的であることと，$C$ とその補集合 $dash(C)$ が再帰的可算であることは同値である#footnote[菊池，補題5.4.8などを参考．]．
+  $C$ が再帰的であることと，$C$ とその補集合 $dash(C)$ が再帰的可算であることは同値である#footnote[@kikuchiIncompleteness2014[補題5.4.8]などを参考．]．
   $C, dash(C)$ をそれぞれ $Model(M)$ の超準元 $e, dash(e)$ にエンコードする．
   #struct[
     まずアイデアを説明する．
@@ -357,7 +358,7 @@ Overspillから次のことが一般に成り立つ（証明不明）．
 
 #remark[
   一方，$IOpenArithmetic$ は再帰的な超準モデルを持つ．
-  より詳細に言えば，ある代数的構造が $IOpenArithmetic$ のモデルになる再帰的な条件が知られていて，これはShepherdsonの定理として知られている（菊池 8.3.19）．
+  より詳細に言えば，ある代数的構造が $IOpenArithmetic$ のモデルになる再帰的な条件が知られていて，これはShepherdsonの定理として知られている @kikuchiIncompleteness2014[p.265]．
   大雑把に考えれば，どのように頑張っても $IOpenArithmetic$ では超越的な方法を超えず計算可能な方法でしか事実を証明出来ないということを意味し，
   その意味で $IOpenArithmetic$ は非常に弱く，
   例えば $IOpenArithmetic$ では「素数は無限に存在する」などの素数に関する性質はほとんど証明できない．
@@ -365,7 +366,7 @@ Overspillから次のことが一般に成り立つ（証明不明）．
 
 #remark[
   @thm:Tennenbaum の証明の中核は，再帰的可算だが再帰的分離不能な集合の存在である．
-  このような集合から直接に第一不完全性定理を導くことが出来る（菊池7.3.20，7.3.21参照）．
+  このような集合から直接に第一不完全性定理を導くことが出来る @kikuchiIncompleteness2014[pp.234-235]．
   このような観点から，Tennenbaumの定理とは第1不完全性定理のモデル的な書き直しであるとも言える．
 ]
 
