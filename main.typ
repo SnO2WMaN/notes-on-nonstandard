@@ -93,6 +93,16 @@ $PeanoArithmetic$ では全ての算術的な論理式に対して最小値原�
   $StandardModel notIsomorphic Model(M)$，すなわち $Model(M)$ は超準モデルである．
 ]
 
+このあたりの証明は @TanakaMathematicalFoundation2019 を参考にしてほしい．
+
+#proposition[
+  $PeanoArithmetic$ の超準モデルの順序型は $eta$ を端点を持たない線形順序として，$NN + ZZ times eta$ である．
+]
+
+#proposition[
+  $IDeltaZeroArithmetic$ の超準モデルの順序型は $NN + ZZ times QQ$ である．
+]
+
 #let initSeg = $attach(subset.eq, br: upright("e"))$
 
 #definition[
