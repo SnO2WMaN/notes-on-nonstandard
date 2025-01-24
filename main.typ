@@ -195,7 +195,7 @@ Overspillから次のことが一般に成り立つ（証明不明）．
   $IOpenArithmetic$ の超準モデルの中では $StandardModel$ を開論理式で定義することが出来ない．
 ]
 
-== Tennenbaumの定理
+= Tennenbaumの定理
 
 #definition[
   再帰的可算集合 $A, B$ が再帰的分離不能とは，次を満たすこととする．
@@ -382,3 +382,172 @@ Overspillから次のことが一般に成り立つ（証明不明）．
 
 例えばある命題が $PeanoArithmetic$ や $IDeltaZeroArithmetic$ から証明可能でないことを示すには，その命題を成り立たせないモデルの存在を示せばよい．
 しかし $PeanoArithmetic$ や $IDeltaZeroArithmetic$ の超準モデルは再帰的にはなりえないので，そのようなモデルを構成することは非常に難しい．
+
+= モデル論的な第2不完全性定理の証明
+
+#let Fml(L) = $upright("Fml")_#L$
+#let Pr(T) = $upright("Pr")_#T$
+#let subst(x, y, z) = $[#y |-> #z]#x$
+#let HenkinCons = $upright("Const")$
+#let Mod(T) = $upright("Mod")_#T$
+#let Thm(T) = $upright("Thm")_#T$
+#let HenkinThm(T) = $upright("Thm")^upright("H")_#T$
+
+#notation[
+  この章では $PeanoArithmetic$ は無矛盾であるとする．
+]
+
+#definition[
+  理論 $T$ とする．
+  論理式 $phi(x)$ に対し，次の論理式を $and$ で結んだ $LangArith$-論理式を $Mod(T)(phi)$ とする．
+  $
+    forall x. &[Pr(T)(x) -> phi(x)] \
+    forall x, y. &[Fml(LangArith^+) (x) -> [phi(dot(not) x) <-> not phi(x)]] \
+    forall x. y. &[Fml(LangArith^+) (x) and Fml(LangArith^+)(y) -> [phi(x dot(and) y) <-> [phi(x) and phi(y)]]] \
+    forall x. y. &[Fml(LangArith^+) (x) and Fml(LangArith^+)(y) -> [phi(x dot(or) y) <-> [phi(x) or phi(y)]]] \
+    forall x. &[Fml(LangArith^+) (x) -> [phi(dot(exists)(x,y)) <-> exists z.[HenkinCons(z) and phi(subst(x, y, z))]]] \
+    forall x. &[Fml(LangArith^+) (x) -> [phi(dot(forall)(x,y)) <-> forall z.[HenkinCons(z) -> phi(subst(x, y, z))]]]
+  $
+
+  ただし，$dot(not) x, x dot(and) y, x dot(or) y, dot(exists)(x, y), dot(forall)(x, y), subst(x, y, z)$ はGödel数を計算する関数であり，以下を満たす．
+  - $dot(not)GoedelNum(phi) = GoedelNum(not phi),
+      GoedelNum(phi) dot(and) GoedelNum(psi) = GoedelNum(phi and psi),
+      GoedelNum(phi) dot(or) GoedelNum(psi) = GoedelNum(phi or psi)$
+  - $dot(exists)(GoedelNum(phi), GoedelNum(v))) = GoedelNum(exists v. phi(v)),
+      dot(forall)(GoedelNum(phi), GoedelNum(v))) = GoedelNum(forall v. phi(v))$
+  - $subst(GoedelNum(phi), GoedelNum(u), GoedelNum(v)) = GoedelNum(phi[u |-> v])$
+
+  また，以下は $Delta_1$-論理式である．
+  - $Fml(LangArith + C)(x)$ は「$x$ は $LangArith^+$-論理式のGödel数」
+  - $HenkinCons(x)$ は「$x$ は $C$ の元，すなわちHenkin定数のGödel数」
+
+  このとき，文 $Mod(T)(phi)$ は
+  // 「$phi(x)$ を満たす $x$ 全体は $T$ の完全な拡大理論の元のGödel数全体と等しい」あるいはより簡潔に
+  「$phi(x)$ は $T$ のモデルで正しい論理式のGödel数を表現する」
+  あるいはより簡潔に「$T$ はモデルを持つ」という命題を表す．
+]
+
+#theorem[完全性定理][
+  無矛盾な理論はモデルを持つ．
+]
+
+この事実は算術上で形式化出来る．
+
+#lemma[
+  「$x$ は $T$ のHenkin拡大理論の元のGödel数である」を意味する $HenkinThm(T)(x)$ が構成できる．
+]
+
+#lemma[算術化された完全性定理][
+  「無矛盾な $T$ のHenkin拡大はモデルを持つ」という事実は $PeanoArithmetic$ 上で形式化出来る．
+  すなわち，次が成り立つ．
+  $
+    PeanoArithmetic vdash Con(T) -> Mod(T)(HenkinThm(T))
+  $
+]
+
+#let defines(T) = $attach(subset.eq, tr: upright("def"), br: #T)$
+
+#definition[
+  $Model(M), Model(M')$ を $PeanoArithmetic$ のモデルで $Model(M) initSeg Model(M')$ とする．
+  以下を満たすとき，$Model(M')$ は $Model(M)$ 上で定義可能な $T$-モデルであるといい，$Model(M) defines(T) Model(M')$ と書く．
+  1. 任意の $LangArith$-文 $sigma$ に対して $Model(M) vDash Thm(T)(GoedelNum(sigma)) <==> Model(M') vDash sigma$ となる $LangArith$-論理式 $Thm(T)(x)$ が存在する．
+  2. 任意の $LangArith$-文 $sigma$ に対して $Model(M) vDash Pr(T)(GoedelNum(sigma)) ==> Model(M') vDash sigma$．
+]
+
+#lemma[
+  $defines(T)$ は非反射的で推移的である．
+] <lem:defines_irrefl_trans>
+
+#proof[
+  #struct[
+    非反射性を見る．仮にある $Model(M)$ で $Model(M) defines(T) Model(M)$ としよう．
+
+    このとき，$Thm(T)(x)$ が存在して任意の $sigma$ で $Model(M) vDash Thm(T)(GoedelNum(sigma)) <==> Model(M) vDash sigma$ が成り立つ．
+    他方，$not Thm(T)(x)$ を対角化すると，$PeanoArithmetic vdash sigma <-> not Thm(T)(GoedelNum(sigma))$ となる不動点 $sigma$ が存在する．
+    この不動点について $Model(M) vDash Thm(T) (GoedelNum(sigma)) <==> Model(M) vDash not Thm(T)(GoedelNum(sigma))$ が成り立つのでおかしい．
+  ]
+  #struct[
+    推移性を見る．$Model(M_1) defines(T) Model(M_2)$ かつ $Model(M_2) defines(T) Model(M_3)$ とする．
+
+    いま，$Model(M_1) defines(T) Model(M_2)$ から $Thm(T)(x)$ があり，任意の $sigma$ で
+    $Model(M_1) vDash Thm(T)(GoedelNum(sigma)) <==> Model(M_2) vDash sigma$．
+
+    同様に，$Model(M_2) defines(T) Model(M_3)$ から $Thm(T)'(x)$ があり，任意の $sigma$ で
+    $Model(M_2) vDash Thm(T)'(GoedelNum(sigma)) <==> Model(M_3) vDash sigma$．
+
+    $Thm(T)''(x) equiv Thm(T)(GoedelNum(Thm(T)'(x)))$ とすると，任意の $sigma$ で以下が成り立つ．
+    $
+      Model(M_1) vDash Thm(T)''(GoedelNum(sigma)) <==> Model(M_2) vDash Thm(T)'(GoedelNum(sigma)) <==> Model(M_3) vDash sigma
+    $
+
+    また，$Pr(T)(x)$ は $Sigma_1$-論理式であり，$Model(M_1) initSeg Model(M_2)$ なので @lem:equiv_initSeg_sigma1 より
+    任意の $sigma$ で $Model(M_1) vDash Pr(T)(GoedelNum(sigma)) <==> Model(M_2) vDash Pr(T)(GoedelNum(sigma))$ が成り立つ．
+    $Model(M_2) defines(T) Model(M_3)$ から $Model(M_2) vDash Pr(T)(GoedelNum(sigma)) ==> Model(M_3) vDash sigma$ なので，
+    結局 $Model(M_1) vDash Pr(T)(GoedelNum(sigma)) ==> Model(M_3) vDash sigma$ が言える．
+
+    以上より，$Model(M_1) defines(T) Model(M_3)$ が成り立つ．
+  ]
+]
+
+#remark[
+  様相論理 $LogicGL$ を定義する有限Kripkeフレームのクラスは非反射的かつ推移的である．
+  // @lem:defines_irrefl_trans を様相論理の観点から捉える．
+  // $PeanoArithmetic$ のモデル全体の集合 $M$ とその2項関係 $defines(T)$ の組 $angle.l M, defines(T) angle.r$ はKripkeフレームとして見たときに
+]
+
+#let GoedelSentence(T) = $upright("G")_#T$
+
+#definition[Gödel文][
+  $not Pr(T)(x)$ を対角化して得られる文 $GoedelSentence(T)$ を $T$ のGödel文という．つまり，$GoedelSentence(T)$ は以下を満たす．
+  $
+    PeanoArithmetic vdash GoedelSentence(T) <-> not Pr(T)(GoedelNum(GoedelSentence(T)))
+  $
+]
+
+#lemma[
+  $PeanoArithmetic + Con(T)$ の任意のモデル $Model(M)$ に対し，
+  $Model(M) defines(T) Model(M')$ となる $T$ のモデル $Model(M')$ が存在する．
+]<lem:exists_defines_model>
+
+#definition[
+  $PeanoArithmetic$ のモデル $Model(M)$ について，
+  $Model(M) vDash GoedelSentence(PeanoArithmetic)$ なら $Model(M)$ は正，そうでないときは $Model(M)$ は負という．
+]
+
+#theorem[
+  $Con(PeanoArithmetic)$ を成立させない $PeanoArithmetic$ のモデルが存在する．
+]<thm:exists_notConPA_model>
+#proof[
+  任意の $PeanoArithmetic$ のモデルで $Con(PeanoArithmetic)$ が成立すると仮定する．
+
+  まず，$PeanoArithmetic$ が無矛盾なので $PeanoArithmetic$ のモデル $Model(M_1)$ が存在する．
+  $Model(M_1)$ から負の $PeanoArithmetic$ のモデル $Model(M_2)$ を構成する．
+  #struct[
+    $Model(M_1)$ が負なら，$Model(M_2)$ は $Model(M_1)$ とすればよい．
+
+    $Model(M_1)$ が正のとき，Gödel文の定義より $Model(M_1) vDash not Pr(PeanoArithmetic)(GoedelNum(GoedelSentence(PeanoArithmetic)))$ であり，
+    したがって，$Model(M_1) vDash Con(PeanoArithmetic + not GoedelSentence(PeanoArithmetic))$．
+    @lem:exists_defines_model から，$PeanoArithmetic + not GoedelSentence(PeanoArithmetic)$ のモデル $Model(M_2)$ が存在して，
+    $Model(M_1) defines(PeanoArithmetic + not GoedelSentence(PeanoArithmetic)) Model(M_2)$．
+    明らかに，$Model(M_2)$ は負である．
+  ]
+
+  仮定より，$Model(M_2)$ は $Con(PeanoArithmetic)$ が成立する．
+  したがって @lem:exists_defines_model より $PeanoArithmetic$ のモデル $Model(M_3)$ が存在して $Model(M_2) defines(PeanoArithmetic) Model(M_3)$．
+  今 $Model(M_2)$ が負なので $Model(M_2) vDash Pr(PeanoArithmetic)(GoedelNum(GoedelSentence(PeanoArithmetic)))$ であるから，$Model(M_3) vDash GoedelSentence(PeanoArithmetic)$．
+  よって，$Model(M_3)$ は正である．
+
+  $Model(M_3)$ が正なので，$Model(M_2)$ を作ったときと同様に $Model(M_3)$ から負の $PeanoArithmetic$ のモデル $Model(M_4)$ を構成できて，
+  $Model(M_3) defines(PeanoArithmetic) Model(M_4)$ が成り立つ．
+
+  $defines(PeanoArithmetic)$ の推移性より，$Model(M_2) defines(PeanoArithmetic) Model(M_4)$ であり，
+  よって $Model(M_2) vDash Pr(PeanoArithmetic)(GoedelNum(GoedelSentence(PeanoArithmetic)))$ から $Model(M_4) vDash GoedelSentence(PeanoArithmetic)$ が導かれる．しかし $Model(M_4)$ は負であるから，これはおかしい．
+]
+
+#corollary[第2不完全性定理][
+  $PeanoArithmetic nvdash Con(PeanoArithmetic)$．
+]
+#proof[
+  @thm:exists_notConPA_model と完全性定理より $PeanoArithmetic + not Con(PeanoArithmetic)$ は無矛盾である．
+  仮に $PeanoArithmetic vdash Con(PeanoArithmetic)$ とすると $PeanoArithmetic + not Con(PeanoArithmetic)$ から $bot$ が導出できて無矛盾性に反する．
+]

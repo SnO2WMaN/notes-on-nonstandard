@@ -151,9 +151,7 @@
 #let vDash = $tack.r.double$
 #let nvDash = $tack.r.double.not$
 
-#let Thm = $upright("Thm")$
-#let Bew = $bold(upright("Pr"))$
-#let Con = $bold(upright("Con"))$
+#let Con(T) = $upright("Con")_#T$
 
 #let ulcorner = $⌈$
 #let urcorner = $⌉$
