@@ -1,6 +1,14 @@
 #import "@preview/ctheorems:1.1.3": *
 #import "@preview/codelst:2.0.2": sourcecode
 
+#let meta(json) = block[
+  #list(
+    [この文書のリポジトリは#link(json.url)です．誤植や訂正などはIssuesから連絡してください．],
+    [この文書は#text(json.licenseInfo.name)でライセンスされています．],
+  )
+]
+
+
 #let project(
   title: "",
   authors: (),
@@ -37,6 +45,9 @@
   set par(justify: true)
 
   set bibliography(title: "参考文献")
+
+  heading(numbering: none)[メタ情報]
+  meta(json("meta.json"))
 
   outline(title: "目次")
 
