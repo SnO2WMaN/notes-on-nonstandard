@@ -21,12 +21,8 @@
 
 #let Nat = $NN$
 
-= はじめに
-
 算術の超準モデルの性質，およびTennenbaumの定理(@thm:Tennenbaum)についてのメモ．
 ほとんどは @tanakaSugakuKisoRon1997 の特に @kikuchiPartSanjutsuNo1997 の章，および @kikuchiIncompleteness2014 に基づいている．
-
-= 本文
 
 #notation[
   全体を通して，以下とする．
@@ -38,7 +34,7 @@
   - 自然数 $n$ とその数項 $numeral(n)$ は適当に同一視する．
 ]
 
-== 最小値原理
+= 準備
 
 #proposition[最小値原理][
   空でない自然数の部分集合には必ず最小値が存在する．
@@ -67,7 +63,7 @@ $PeanoArithmetic$ では全ての算術的な論理式に対して最小値原�
   - $IOpenArithmetic vdash LNP(upright("Open"))$．
 ]
 
-== 超準モデルの基本的な性質
+= 超準モデルの基本的な性質
 
 #theorem[
   $T$ が $StandardModel$ をモデルに持つなら，可算濃度の超準モデルを持つ．
@@ -390,8 +386,8 @@ Overspillから次のことが一般に成り立つ（証明不明）．
 #let subst(x, y, z) = $[#y |-> #z]#x$
 #let HenkinCons = $upright("Const")$
 #let Mod(T) = $upright("Mod")_#T$
-#let Thm(T) = $upright("Thm")_#T$
-#let HenkinThm(T) = $upright("Thm")^upright("H")_#T$
+#let Th(T) = $upright("Th")_#T$
+#let HenkinTh(T) = $upright("Th")^upright("H")_#T$
 
 #notation[
   この章では $PeanoArithmetic$ は無矛盾であるとする．
@@ -434,14 +430,14 @@ Overspillから次のことが一般に成り立つ（証明不明）．
 この事実は算術上で形式化出来る．
 
 #lemma[
-  「$x$ は $T$ のHenkin拡大理論の元のGödel数である」を意味する $HenkinThm(T)(x)$ が構成できる．
+  「$x$ は $T$ のHenkin拡大理論の元のGödel数である」を意味する $HenkinTh(T)(x)$ が構成できる．
 ]
 
 #lemma[算術化された完全性定理][
   「無矛盾な $T$ のHenkin拡大はモデルを持つ」という事実は $PeanoArithmetic$ 上で形式化出来る．
   すなわち，次が成り立つ．
   $
-    PeanoArithmetic vdash Con(T) -> Mod(T)(HenkinThm(T))
+    PeanoArithmetic vdash Con(T) -> Mod(T)(HenkinTh(T))
   $
 ]
 
@@ -450,7 +446,7 @@ Overspillから次のことが一般に成り立つ（証明不明）．
 #definition[
   $Model(M), Model(M')$ を $PeanoArithmetic$ のモデルで $Model(M) initSeg Model(M')$ とする．
   以下を満たすとき，$Model(M')$ は $Model(M)$ 上で定義可能な $T$-モデルであるといい，$Model(M) defines(T) Model(M')$ と書く．
-  1. 任意の $LangArith$-文 $sigma$ に対して $Model(M) vDash Thm(T)(GoedelNum(sigma)) <==> Model(M') vDash sigma$ となる $LangArith$-論理式 $Thm(T)(x)$ が存在する．
+  1. 任意の $LangArith$-文 $sigma$ に対して $Model(M) vDash Th(T)(GoedelNum(sigma)) <==> Model(M') vDash sigma$ となる $LangArith$-論理式 $Th(T)(x)$ が存在する．
   2. 任意の $LangArith$-文 $sigma$ に対して $Model(M) vDash Pr(T)(GoedelNum(sigma)) ==> Model(M') vDash sigma$．
 ]
 
@@ -462,22 +458,22 @@ Overspillから次のことが一般に成り立つ（証明不明）．
   #struct[
     非反射性を見る．仮にある $Model(M)$ で $Model(M) defines(T) Model(M)$ としよう．
 
-    このとき，$Thm(T)(x)$ が存在して任意の $sigma$ で $Model(M) vDash Thm(T)(GoedelNum(sigma)) <==> Model(M) vDash sigma$ が成り立つ．
-    他方，$not Thm(T)(x)$ を対角化すると，$PeanoArithmetic vdash sigma <-> not Thm(T)(GoedelNum(sigma))$ となる不動点 $sigma$ が存在する．
-    この不動点について $Model(M) vDash Thm(T) (GoedelNum(sigma)) <==> Model(M) vDash not Thm(T)(GoedelNum(sigma))$ が成り立つのでおかしい．
+    このとき，$Th(T)(x)$ が存在して任意の $sigma$ で $Model(M) vDash Th(T)(GoedelNum(sigma)) <==> Model(M) vDash sigma$ が成り立つ．
+    他方，$not Th(T)(x)$ を対角化すると，$PeanoArithmetic vdash sigma <-> not Th(T)(GoedelNum(sigma))$ となる不動点 $sigma$ が存在する．
+    この不動点について $Model(M) vDash Th(T) (GoedelNum(sigma)) <==> Model(M) vDash not Th(T)(GoedelNum(sigma))$ が成り立つのでおかしい．
   ]
   #struct[
     推移性を見る．$Model(M_1) defines(T) Model(M_2)$ かつ $Model(M_2) defines(T) Model(M_3)$ とする．
 
-    いま，$Model(M_1) defines(T) Model(M_2)$ から $Thm(T)(x)$ があり，任意の $sigma$ で
-    $Model(M_1) vDash Thm(T)(GoedelNum(sigma)) <==> Model(M_2) vDash sigma$．
+    いま，$Model(M_1) defines(T) Model(M_2)$ から $Th(T)(x)$ があり，任意の $sigma$ で
+    $Model(M_1) vDash Th(T)(GoedelNum(sigma)) <==> Model(M_2) vDash sigma$．
 
-    同様に，$Model(M_2) defines(T) Model(M_3)$ から $Thm(T)'(x)$ があり，任意の $sigma$ で
-    $Model(M_2) vDash Thm(T)'(GoedelNum(sigma)) <==> Model(M_3) vDash sigma$．
+    同様に，$Model(M_2) defines(T) Model(M_3)$ から $Th(T)'(x)$ があり，任意の $sigma$ で
+    $Model(M_2) vDash Th(T)'(GoedelNum(sigma)) <==> Model(M_3) vDash sigma$．
 
-    $Thm(T)''(x) equiv Thm(T)(GoedelNum(Thm(T)'(x)))$ とすると，任意の $sigma$ で以下が成り立つ．
+    $Th(T)''(x) equiv Th(T)(GoedelNum(Th(T)'(x)))$ とすると，任意の $sigma$ で以下が成り立つ．
     $
-      Model(M_1) vDash Thm(T)''(GoedelNum(sigma)) <==> Model(M_2) vDash Thm(T)'(GoedelNum(sigma)) <==> Model(M_3) vDash sigma
+      Model(M_1) vDash Th(T)''(GoedelNum(sigma)) <==> Model(M_2) vDash Th(T)'(GoedelNum(sigma)) <==> Model(M_3) vDash sigma
     $
 
     また，$Pr(T)(x)$ は $Sigma_1$-論理式であり，$Model(M_1) initSeg Model(M_2)$ なので @lem:equiv_initSeg_sigma1 より
